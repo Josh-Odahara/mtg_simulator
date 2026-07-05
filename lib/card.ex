@@ -6,7 +6,7 @@ defmodule DefenseCard do
   defstruct [:name, :effect, :block]
 end
 
-defmodule Card do
+defmodule MTGSimulator.Card do
   alias AttackCard
   alias DefenseCard
 

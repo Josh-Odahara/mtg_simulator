@@ -7,6 +7,8 @@ defmodule DefenseCard do
 end
 
 defmodule Card do
+  alias AttackCard
+  alias DefenseCard
 
   def start_deck do
     [

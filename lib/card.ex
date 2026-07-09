@@ -1,14 +1,14 @@
-defmodule AttackCard do
+defmodule MTGSimulator.AttackCard do
   defstruct [:name, :damage, :type]
 end
 
-defmodule DefenseCard do
+defmodule MTGSimulator.DefenseCard do
   defstruct [:name, :effect, :block]
 end
 
 defmodule MTGSimulator.Card do
-  alias AttackCard
-  alias DefenseCard
+  alias MTGSimulator.AttackCard
+  alias MTGSimulator.DefenseCard
 
   def start_deck do
     [

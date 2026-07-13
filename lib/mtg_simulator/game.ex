@@ -122,11 +122,6 @@ defmodule MTGSimulator.Game do
       %DefenseCard{} ->
         {updated_player1, player2}
     end
-
-          case determine_winner(p1, p2) do
-        :player1 -> IO.puts("Player 1 wins!")
-        :player2 -> IO.puts("Player 2 wins!")
-        :tie -> turn_loop(p1, p2)
-      end
+    {p1, p2}
   end
 end

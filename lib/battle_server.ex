@@ -24,7 +24,12 @@ defmodule MTGSimulator.BattleServer do
   def handle_call(:play_turn, _from, %{player1: player1, player2: player2, turn: turn, log: log} = state) do
     {p1, p2} = Game.turn_loop(player1, player2)
     new_state = %{player1: p1, player2: p2, turn: turn + 1, log: log}
-    {:reply, {p1, p2}, new_state}
+
+    case Game.determine_winner(p1, p2) do
+      :player1 -> {:reply, :player1_wins, new_state}
+      :player2 -> {:reply, :player2_wins, new_state}
+      :tie -> {:reply, {p1, p2}, new_state}
+    end
   end
 
   def handle_cast(:log_turn, state) do

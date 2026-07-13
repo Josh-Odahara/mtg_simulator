@@ -1,21 +1,20 @@
-# MtgSimulator
+# MTG Simulator
+A command-line Magic: The Gathering battle simulator built in Elixir, using GenServers to model game state and turn-based combat.
 
-**TODO: Add description**
+## Overview
+MTG Simulator lets you simulate card battles from the terminal. Game state (players, life totals, hands, battlefield, turn phases) is managed through OTP GenServers, giving each match a supervised, stateful process that handles actions like casting spells, attacking, and resolving combat.
 
-## Installation
+## Features
+- CLI-driven gameplay loop
+- GenServer-backed battle state management
+- Turn/phase progression (main phase, combat, etc.)
+- Player actions: play cards, attack, block, pass priority
+- (add/remove as accurate: card database, deck loading, damage resolution, etc.)
 
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed
-by adding `mtg_simulator` to your list of dependencies in `mix.exs`:
+## Tech Stack
+- **Language:** Elixir
+- **Concurrency model:** OTP GenServer
+- **Interface:** CLI
 
-```elixir
-def deps do
-  [
-    {:mtg_simulator, "~> 0.1.0"}
-  ]
-end
-```
-
-Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
-and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at <https://hexdocs.pm/mtg_simulator>.
-
+## Project Status
+🚧 Actively in development. Core battle logic (`battle_server.ex`) is still being built out.

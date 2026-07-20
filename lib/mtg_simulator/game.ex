@@ -3,7 +3,6 @@ defmodule MTGSimulator.Game do
   Game keeps all the logic behind turns and phases
   """
   alias MTGSimulator.Card
-  alias MTGSimulator.Player
   alias MTGSimulator.AttackCard
   alias MTGSimulator.DefenseCard
 
@@ -36,10 +35,10 @@ defmodule MTGSimulator.Game do
     end
   end
 
-  def draw_card_for_player(player) do
+  def draw_card_for_player(%MTGSimulator.Player{} = player) do
     {card, remaining_deck} = draw_card(player.deck)
 
-    updated_player = %MTGSimulator.Player{
+    updated_player =%MTGSimulator.Player{
       player
       | deck: remaining_deck,
         hand: [card | player.hand]
@@ -48,19 +47,19 @@ defmodule MTGSimulator.Game do
     updated_player
   end
 
-  def discard_card_for_player(player, picked_card) do
+  def discard_card_for_player(%MTGSimulator.Player{} = player, picked_card) do
     discard_card = Enum.reject(player.hand, fn card -> card.name == picked_card.name end)
     updated_player = %MTGSimulator.Player{player | hand: discard_card}
     updated_player
   end
 
-  def choose_card_for_player(player) do
+  def choose_card_for_player(%MTGSimulator.Player{} = player) do
     Enum.each(player.hand, fn card -> IO.puts(card.name) end)
     find_card = IO.gets("Choose your card: ") |> String.trim()
     Enum.find(player.hand, fn card -> card.name == find_card end)
   end
 
-  def play_attack_card(player1, player2, picked_card) do
+  def play_attack_card(%MTGSimulator.Player{} = player1, %MTGSimulator.Player{} = player2, picked_card) do
     IO.puts(picked_card.name)
 
     discard_card = Enum.reject(player1.hand, fn card -> card.name == picked_card.name end)
@@ -69,7 +68,7 @@ defmodule MTGSimulator.Game do
     {updated_player1, updated_player2}
   end
 
-  def play_defense_card(player1, player2, picked_card, incoming_damage) do
+  def play_defense_card(%MTGSimulator.Player{} = player1, %MTGSimulator.Player{} = player2, picked_card, incoming_damage) do
     IO.puts(picked_card.name)
 
     case picked_card.effect do

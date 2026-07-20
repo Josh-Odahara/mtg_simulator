@@ -10,11 +10,9 @@ MTG Simulator lets you simulate card battles from the terminal. Game state (play
 - Turn/phase progression (main phase, combat, etc.)
 - Player actions: play cards, attack, block, pass priority
 - (add/remove as accurate: card database, deck loading, damage resolution, etc.)
+- Core battle logic on battle_server.ex
 
 ## Tech Stack
 - **Language:** Elixir
 - **Concurrency model:** OTP GenServer
 - **Interface:** CLI
-
-## Project Status
-🚧 Actively in development. Core battle logic (`battle_server.ex`) is still being built out.

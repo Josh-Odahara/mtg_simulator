@@ -29,6 +29,7 @@ defmodule MTGSimulator.Game do
     player2_score = player2.life
 
     cond do
+      player1_score <= 0 and player2_score <= 0 -> :tie
       player1_score <= 0 -> :player2
       player2_score <= 0 -> :player1
       true -> :tie
@@ -38,7 +39,7 @@ defmodule MTGSimulator.Game do
   def draw_card_for_player(%MTGSimulator.Player{} = player) do
     {card, remaining_deck} = draw_card(player.deck)
 
-    updated_player =%MTGSimulator.Player{
+    updated_player = %MTGSimulator.Player{
       player
       | deck: remaining_deck,
         hand: [card | player.hand]
@@ -59,7 +60,11 @@ defmodule MTGSimulator.Game do
     Enum.find(player.hand, fn card -> card.name == find_card end)
   end
 
-  def play_attack_card(%MTGSimulator.Player{} = player1, %MTGSimulator.Player{} = player2, picked_card) do
+  def play_attack_card(
+        %MTGSimulator.Player{} = player1,
+        %MTGSimulator.Player{} = player2,
+        picked_card
+      ) do
     IO.puts(picked_card.name)
 
     discard_card = Enum.reject(player1.hand, fn card -> card.name == picked_card.name end)
@@ -68,7 +73,12 @@ defmodule MTGSimulator.Game do
     {updated_player1, updated_player2}
   end
 
-  def play_defense_card(%MTGSimulator.Player{} = player1, %MTGSimulator.Player{} = player2, picked_card, incoming_damage) do
+  def play_defense_card(
+        %MTGSimulator.Player{} = player1,
+        %MTGSimulator.Player{} = player2,
+        picked_card,
+        incoming_damage
+      ) do
     IO.puts(picked_card.name)
 
     case picked_card.effect do
@@ -94,33 +104,39 @@ defmodule MTGSimulator.Game do
       :block ->
         updated_player1 = %MTGSimulator.Player{
           player1
-          | life: player1.life - (incoming_damage - picked_card.block)}
+          | life: player1.life - (incoming_damage - picked_card.block)
+        }
+
         discarded_player1 = discard_card_for_player(updated_player1, picked_card)
         {discarded_player1, player2}
-      end
+    end
   end
 
   def turn_loop(player1, player2) do
     updated_player1 = draw_card_for_player(player1)
     picked_card = choose_card_for_player(updated_player1)
 
-    {p1, p2} = case picked_card do
-      %AttackCard{} ->
-        updated_player2 = draw_card_for_player(player2)
-        chosen_card = choose_card_for_player(updated_player2)
+    {p1, p2} =
+      case picked_card do
+        %AttackCard{} ->
+          updated_player2 = draw_card_for_player(player2)
+          chosen_card = choose_card_for_player(updated_player2)
 
-        case chosen_card do
+          case chosen_card do
             %AttackCard{} ->
               play_attack_card(updated_player1, updated_player2, chosen_card)
+
             %DefenseCard{} ->
               play_defense_card(updated_player1, updated_player2, chosen_card, picked_card.damage)
-        end
+          end
 
-      %DefenseCard{effect: :heal} ->
-        play_defense_card(updated_player1, player2, picked_card, 0)
-      %DefenseCard{} ->
-        {updated_player1, player2}
-    end
+        %DefenseCard{effect: :heal} ->
+          play_defense_card(updated_player1, player2, picked_card, 0)
+
+        %DefenseCard{} ->
+          {updated_player1, player2}
+      end
+
     {p1, p2}
   end
 end

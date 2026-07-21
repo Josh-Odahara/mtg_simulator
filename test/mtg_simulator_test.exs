@@ -1,3 +1,2 @@
 defmodule MtgSimulatorTest do
-
 end

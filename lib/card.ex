@@ -10,7 +10,6 @@ defmodule MTGSimulator.Card do
   alias MTGSimulator.AttackCard
   alias MTGSimulator.DefenseCard
 
-
   def start_deck do
     [
       %AttackCard{name: "Fireball Cat", damage: 10},

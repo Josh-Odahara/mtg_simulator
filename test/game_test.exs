@@ -51,4 +51,19 @@ defmodule GameTest do
     assert length(hand) == 5
     assert length(remaining_deck) == 1
   end
+
+  test "discard_card_for_player/2 removes the picked card from the player's hand" do
+    player = %MTGSimulator.Player{
+      hand: [
+        %MTGSimulator.AttackCard{name: "Fireball Cat", damage: 10},
+        %MTGSimulator.DefenseCard{name: "Block", block: 5}
+      ]
+    }
+
+    picked_card = %MTGSimulator.AttackCard{name: "Fireball Cat", damage: 10}
+    updated_player = Game.discard_card_for_player(player, picked_card)
+
+    assert length(updated_player.hand) == 1
+    assert Enum.all?(updated_player.hand, fn card -> card.name != picked_card.name end)
+  end
 end

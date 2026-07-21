@@ -16,3 +16,6 @@ MTG Simulator lets you simulate card battles from the terminal. Game state (play
 - **Language:** Elixir
 - **Concurrency model:** OTP GenServer
 - **Interface:** CLI
+
+## WIP
+- Refactor of choose_card_for_player to be testable
